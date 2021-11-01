@@ -1,6 +1,6 @@
 # cs-smaf
 training a dictionary using compressed sensing and two algorithems
-clearly's algorithem:
+cleary's algorithem:
 
 
 
