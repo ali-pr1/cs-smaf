@@ -1,0 +1,36 @@
+import os
+os.chdir("D:\projects\compressed sensing\python")
+from scipy.io import mmread
+import numpy as np
+from sklearn.decomposition import NMF as nmf
+from sklearn import linear_model
+from sklearn.linear_model import OrthogonalMatchingPursuit as omp
+from sklearn.linear_model import MultiTaskLasso as lasso
+from scipy import sparse
+from scipy import stats
+def smaf(X,d,maxItr=1,UW=None,donorm=False):
+    #use nmf to solve|X-UW| for U&W
+    model=nmf(n_components=d)
+    X=sparse.csr_matrix(X).todense()
+    U=sparse.csr_matrix(model.fit_transform(X))
+    U = np.asarray(U.todense())
+    W=sparse.csr_matrix(model.components_)
+    W = np.asarray(W.todense())
+    Xhat = U.dot(W)
+    Xnorm = np.linalg.norm(X)**2/X.shape[1]
+    for itr in range(maxItr):
+        #use lasso to optimize |X.T-W.T U.T|l2+|U|l1
+        clf=lasso()
+        clf.fit(np.transpose(W),np.transpose(X))
+        U=clf.coef_
+        U = np.asarray(U)
+        if donorm:
+            U=U/np.linalg.norm(U,axis=0)
+            U[np.isnan(U)]=0
+        else:
+            # use omp to optimize |X-UW|l2+|W|l1
+            clt=lasso()
+            clt.fit(X,U)
+            W=clt.coef_
+            
+    return sparse.csr_matrix(W), sparse.csr_matrix(U)
