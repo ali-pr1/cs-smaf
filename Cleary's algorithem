@@ -1,3 +1,7 @@
+#visit:
+#https://github.com/brian-cleary/CS-SMAF
+
+
 import numpy as np
 from scipy.stats import entropy
 from scipy.spatial import distance
