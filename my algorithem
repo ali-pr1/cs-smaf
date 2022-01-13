@@ -28,7 +28,6 @@ def smaf(X,d,maxItr=1,UW=None,donorm=False):
             U=U/np.linalg.norm(U,axis=0)
             U[np.isnan(U)]=0
         else:
-            # use omp to optimize |X-UW|l2+|W|l1
             clt=lasso()
             clt.fit(X,U)
             W=clt.coef_
