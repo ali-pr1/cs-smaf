@@ -31,6 +31,6 @@ iii) use X,U,Orthogonal Matching Pursuit (OMP) to optimize : ||X-UW||l2^2 s.t ||
 
                                                                                         
                                                                                         
-    my algorithem remains untested 
+to be continued
                                                         
                                                                           
